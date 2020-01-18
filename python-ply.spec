@@ -7,11 +7,12 @@
 Name:             python-ply
 Summary:          Python Lex-Yacc
 Version:          3.4
-Release:          10%{?dist}
+Release:          11%{?dist}
 License:          BSD
 Group:            System Environment/Libraries
 URL:              http://www.dabeaz.com/ply/
 Source0:          http://www.dabeaz.com/ply/ply-%{version}.tar.gz
+Patch0:           0001-Replace-md5-in-signature-calculation.patch
 BuildRoot:        %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:        noarch
 BuildRequires:    python-devel
@@ -58,6 +59,7 @@ essential features:
 
 %prep
 %setup -q -n ply-%{version}
+%patch0 -p0
 sed -i 's|/usr/local/bin/python|/usr/bin/python|g' example/yply/yply.py
 chmod -x example/yply/yply.py example/newclasscalc/calc.py example/classcalc/calc.py example/cleanup.sh
 
@@ -115,6 +117,9 @@ rm -rf $RPM_BUILD_ROOT
 %endif # with_python3
 
 %changelog
+* Tue Mar 7 2017 Stanislav Laznicka <slaznick@redhat.com> 3.4-11
+- Replace md5 in signature calculation in order to allow use in FIPS
+
 * Fri Jun 12 2015 Martin Kosek <mkosek@redhat.com> 3.4-10
 - Increase Release number to get a clean upgrade path from EPEL 7
 

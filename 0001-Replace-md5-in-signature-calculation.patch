@@ -1,0 +1,35 @@
+diff -u ply/yacc.py ply.mine/yacc.py
+--- ply/yacc.py	2011-02-18 04:52:28.000000000 +0100
++++ ply.mine/yacc.py	2017-03-03 16:01:13.609507492 +0100
+@@ -2794,24 +2794,20 @@
+ 
+     # Compute a signature over the grammar
+     def signature(self):
++        parts = []
+         try:
+-            from hashlib import md5
+-        except ImportError:
+-            from md5 import md5
+-        try:
+-            sig = md5()
+             if self.start:
+-                sig.update(self.start.encode('latin-1'))
++                parts.append(self.start)
+             if self.prec:
+-                sig.update("".join(["".join(p) for p in self.prec]).encode('latin-1'))
++                parts.append(''.join([''.join(p) for p in self.prec]))
+             if self.tokens:
+-                sig.update(" ".join(self.tokens).encode('latin-1'))
++                parts.append(' '.join(self.tokens))
+             for f in self.pfuncs:
+                 if f[3]:
+-                    sig.update(f[3].encode('latin-1'))
+-        except (TypeError,ValueError):
++                    parts.append(f[3])
++        except (TypeError, ValueError):
+             pass
+-        return sig.digest()
++        return ''.join(parts)
+ 
+     # -----------------------------------------------------------------------------
+     # validate_file()
